@@ -11,6 +11,9 @@ import { RefreshTokensController } from 'server/controllers/refresh_tokens.contr
 import { Role } from 'server/entities/role.entity';
 import { RolesService } from 'server/providers/services/roles.service';
 import { UserRole } from 'server/entities/user_role.entity';
+import { User_Projects } from 'server/entities/user-projects.entity';
+import { Tasks } from 'server/entities/tasks.entity';
+import { Project } from 'server/entities/project.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, RefreshToken, Role, UserRole])],

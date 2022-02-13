@@ -1,3 +1,4 @@
+import { debug } from 'console';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ApiContext } from '../../utils/api_context';
@@ -8,40 +9,30 @@ import { Button } from '../common/button';
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const api = useContext(ApiContext);
-  const roles = useContext(RolesContext);
 
-  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
 
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
   useEffect(async () => {
-    const res = await api.get('/users/me');
-    setUser(res.user);
-    setLoading(false);
+    const { projects } = await api.get('/projects');
+    setProjects(projects);
   }, []);
 
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
+  const createProject = async ()=>{
+    const { project } = await api.post('/projects');
 
-  if (loading) {
-    return <div>Loading...</div>;
+    setProjects([...projects, project]);
   }
 
   return (
     <div className="p-4">
-      <h1>Welcome {user.firstName}</h1>
-      <Button type="button" onClick={logout}>
-        Logout
-      </Button>
-      {roles.includes('admin') && (
-        <Button type="button" onClick={() => navigate('/admin')}>
-          Admin
-        </Button>
-      )}
+      <Button onClick={()=>{createProject()}}>Create New Project</Button>
+        {/* {projects.map((project) => (
+          <div key={project.id}> 
+          Project Name: {project.id}
+            <div>
+            </div>
+          </div>
+        ))} */}
     </div>
   );
 };
