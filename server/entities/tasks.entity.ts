@@ -14,10 +14,10 @@ export class Tasks {
   projectId: number;
 
   @Column({ nullable: false })
-  title: Text;
+  title: string;
 
   @Column({ nullable: false })
-  description: Text;
+  description: string;
 
   @Column({ nullable: false })
   timeEst: number;
