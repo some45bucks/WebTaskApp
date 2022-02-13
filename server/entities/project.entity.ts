@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 import { Tasks } from './tasks.entity';
-import { User_Projects } from './user-projects.entity';
+import { User_Projects } from './user_projects.entity';
 
 @Entity()
 export class Project {
