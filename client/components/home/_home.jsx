@@ -1,47 +1,66 @@
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Button } from './button';
+import { useState, useContext, useEffect } from 'react';
 import { ApiContext } from '../../utils/api_context';
-import { AuthContext } from '../../utils/auth_context';
-import { RolesContext } from '../../utils/roles_context';
-import { Button } from '../common/button';
+import { notStrictEqual } from 'assert';
+//import { ApiContext } from '../../utils/api_content';
 
 export const Home = () => {
-  const [, setAuthToken] = useContext(AuthContext);
-  const api = useContext(ApiContext);
-  const roles = useContext(RolesContext);
+  const [count, setCount] = useState(0);
+  // const [??TASK, ??setTASK] = useState([]);
 
-  const navigate = useNavigate();
+  // for creating a loading when we fetch 
+  //const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  useEffect(async () => {
-    const res = await api.get('/users/me');
-    setUser(res.user);
-    setLoading(false);
-  }, []);
+  // for putting contents into textarea
+  // const [noteContents, setNoteContents] = useState('');
 
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
+  //const api = useContext(ApiContext);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // useEffect(async () => {
+  //   // const {??TASK} = await api.get('??TASK NAME HERE');
+  //   setLoading(false);
+  //   setNotes(notes);
+  // }, []);
+
+  //  if (loading) return <div>Loading...(??TASK) </div>;
+
+  // const saveNote = async () => {
+  //   const noteBody = {
+  //     contents: noteContents,
+  //   };
+  //   const { note } = await ApiContext.post('/notes', noteBody);
+  //   setNotes([...notes, note]); //get all notes from notes array, put into note
+  // };
 
   return (
-    <div className="p-4">
-      <h1>Welcome {user.firstName}</h1>
-      <Button type="button" onClick={logout}>
-        Logout
-      </Button>
-      {roles.includes('admin') && (
-        <Button type="button" onClick={() => navigate('/admin')}>
-          Admin
-        </Button>
-      )}
+
+    <div className="flex flex-col bg-red-200 h-full w-1/2 justify-center">
+      <textarea
+        className="p-2 border-2 rounded flex"
+        />
+        <Button> hello! </Button>
     </div>
+
+    
+    
+
+    // <div>
+    //   <textarea 
+    //     value={noteContents} 
+    //     onChange={(e) => setNoteContents(e.target.value)}
+    //     className="p-2 border-2 rounded" 
+    //   />
+    //   <Button onClick={saveNote}>Save</Button>
+    // </div> 
   );
 };
+//server\controllers\api\notes.controller - has a "NotePostBody" with contents of string
+
+    // just basic button display
+    // <div>
+    //   <h2 className="text-9xl">{count}</h2>
+    //   <div>
+    //     <Button onClick={()=> setCount(count - 1)}>Decrement</Button>
+    //     <Button onClick={()=> setCount(count + 1)}>Increment</Button>
+    //   </div>
+    // </div>
