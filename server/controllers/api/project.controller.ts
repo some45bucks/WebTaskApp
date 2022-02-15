@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpException, Param, Post } from '@nestjs/commo
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Project } from 'server/entities/project.entity';
-import { User_Projects } from 'server/entities/user-projects.entity';
+import { User_Projects } from 'server/entities/user_projects.entity';
 import { ProjectsService } from 'server/providers/services/projects.service';
 import { UsersService } from 'server/providers/services/users.service';
 import { User_ProjectsService } from 'server/providers/services/user_projects.service';

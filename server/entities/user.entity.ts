@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { RefreshToken } from './refresh_token.entity';
 import { Task } from './tasks.entity';
-import { User_Projects } from './user-projects.entity';
+import { User_Projects } from './user_projects.entity';
 import { UserRole } from './user_role.entity';
 
 @Entity()
