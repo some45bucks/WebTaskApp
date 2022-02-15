@@ -33,15 +33,16 @@ export const Home = () => {
   // };
 
   return (
-
-    <div className ="flex h-3/4"> 
-      <article className ="bg-indigo-500 flex-1"> article1 </article>
-      <article className ="bg-blue-400 flex-1"> article2 </article>
-      <article className ="bg-purple-500 flex-1"> article3 </article>
-      <article className ="bg-purple-300 flex-1"> article4 </article>
+    <div className ="bg-blue-200">
+      <div className ="bg-blue-900/90 mr-1"> top bar </div>
+    <div className ="flex flex-row h-full"> 
+      <div className ="bg-blue-900/90 flex-none w-1/6 mr-1 "> side bar </div>
+      <div className ="bg-blue-300/75 flex-1 rounded m-1 mb-1"> article1 </div>
+      <div className ="bg-blue-500/75 flex-1 rounded m-1 mb-1"> article2 </div>
+      <div className ="bg-blue-700/75 flex-1 rounded m-1 mb-1"> To-Do </div>
+      <div className ="bg-blue-900/75 flex-1 rounded m-1 mb-1"> Finished </div>
     </div>
-
-    
+    </div>
     
 
     // <div>
