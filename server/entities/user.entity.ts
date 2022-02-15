@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { RefreshToken } from './refresh_token.entity';
-import { Tasks } from './tasks.entity';
+import { Task } from './tasks.entity';
 import { User_Projects } from './user-projects.entity';
 import { UserRole } from './user_role.entity';
 
@@ -30,6 +30,6 @@ export class User {
   @OneToMany(() => User_Projects, (userProjects) => userProjects.userId)
   userProjects: User_Projects[];
 
-  @OneToMany(() => Tasks, (tasks) => tasks.userId)
-  tasks: Tasks[];
+  @OneToMany(() => Task, (task) => task.userId)
+  tasks: Task[];
 }

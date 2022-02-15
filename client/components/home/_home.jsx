@@ -13,8 +13,8 @@ export const Home = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(async () => {
-    const { projects } = await api.get('/projects');
-    setProjects(projects);
+    //const { projects } = await api.get('/projects');
+    //setProjects(projects);
   }, []);
 
   const createProject = async ()=>{

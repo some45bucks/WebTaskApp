@@ -4,7 +4,7 @@ export class projects1643860602685 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'projects',
+        name: 'project',
         columns: [
           {
             name: 'id',
@@ -12,12 +12,16 @@ export class projects1643860602685 implements MigrationInterface {
             isPrimary: true,
             isGenerated: true,
           },
+          {
+            name: 'name',
+            type: 'text',
+          },
         ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('projects');
+    await queryRunner.dropTable('project');
   }
 }

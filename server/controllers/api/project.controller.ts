@@ -25,6 +25,7 @@ export class projectController {
   @Post('/projects')
   public async create(@JwtBody() jwtBody: JwtBodyDto) {
     const project = new Project();
+    project.name = "blank";
     const user_projects = new User_Projects();
 
     user_projects.projectId = project.id;

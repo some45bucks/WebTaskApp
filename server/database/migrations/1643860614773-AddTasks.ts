@@ -4,7 +4,7 @@ export class tasks1643860614773 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'tasks',
+        name: 'task',
         columns: [
           {
             name: 'id',
@@ -13,7 +13,7 @@ export class tasks1643860614773 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'ProjectId',
+            name: 'projectId',
             type: 'int',
             isNullable: false,
           },
@@ -45,9 +45,22 @@ export class tasks1643860614773 implements MigrationInterface {
         ],
       }),
     );
+
+    queryRunner.createForeignKey(
+      'task',
+      new TableForeignKey(
+        {
+          columnNames: ['projectId'],
+          referencedColumnNames: ['id'],
+          referencedTableName: 'project',
+          onDelete: 'CASCADE',
+        }
+      )
+    )
+
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('tasks');
+    await queryRunner.dropTable('task');
   }
 }
