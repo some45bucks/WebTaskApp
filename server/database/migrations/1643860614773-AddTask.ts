@@ -47,7 +47,7 @@ export class tasks1643860614773 implements MigrationInterface {
       }),
     );
 
-    queryRunner.createForeignKey(
+    await queryRunner.createForeignKey(
       'task',
       new TableForeignKey(
         {
@@ -57,7 +57,19 @@ export class tasks1643860614773 implements MigrationInterface {
           onDelete: 'CASCADE',
         }
       )
-    )
+    );
+
+    await queryRunner.createForeignKey(
+      'task',
+      new TableForeignKey(
+        {
+          columnNames: ['userId'],
+          referencedColumnNames: ['id'],
+          referencedTableName: 'user',
+          onDelete: 'CASCADE',
+        }
+      )
+    );
 
   }
 

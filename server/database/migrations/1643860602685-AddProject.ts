@@ -20,6 +20,7 @@ export class projects1643860602685 implements MigrationInterface {
         ],
       }),
     );
+
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
