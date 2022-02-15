@@ -34,11 +34,11 @@ export const Home = () => {
 
   return (
 
-    <div className="flex flex-col bg-red-200 h-full w-1/2 justify-center">
-      <textarea
-        className="p-2 border-2 rounded flex"
-        />
-        <Button> hello! </Button>
+    <div className ="flex h-3/4"> 
+      <article className ="bg-indigo-500 flex-1"> article1 </article>
+      <article className ="bg-blue-400 flex-1"> article2 </article>
+      <article className ="bg-purple-500 flex-1"> article3 </article>
+      <article className ="bg-purple-300 flex-1"> article4 </article>
     </div>
 
     
