@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { RefreshToken } from './refresh_token.entity';
 import { Task } from './tasks.entity';
-import { User_Projects } from './user_projects.entity';
+import { User_Project } from './user_projects.entity';
 import { UserRole } from './user_role.entity';
 
 @Entity()
@@ -27,8 +27,8 @@ export class User {
   @OneToMany(() => UserRole, (userRole) => userRole.user, { cascade: true })
   userRoles: UserRole[];
 
-  @OneToMany(() => User_Projects, (userProjects) => userProjects.userId)
-  userProjects: User_Projects[];
+  @OneToMany(() => User_Project, (userProject) => userProject.userId)
+  userProject: User_Project[];
 
   @OneToMany(() => Task, (task) => task.userId)
   tasks: Task[];

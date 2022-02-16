@@ -4,7 +4,7 @@ export class AddUserProjectsForeignKey1644964064185 implements MigrationInterfac
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createForeignKey(
-            'userProject',
+            'user_project',
             new TableForeignKey(
               {
                 name: 'userKey',
@@ -17,7 +17,7 @@ export class AddUserProjectsForeignKey1644964064185 implements MigrationInterfac
         );
 
         await queryRunner.createForeignKey(
-          'userProject',
+          'user_project',
           new TableForeignKey(
             {
               name: 'projectKey',
@@ -31,8 +31,8 @@ export class AddUserProjectsForeignKey1644964064185 implements MigrationInterfac
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropForeignKey('userProject','projectKey');
-      await queryRunner.dropForeignKey('userProject','userKey');
+      await queryRunner.dropForeignKey('user_project','projectKey');
+      await queryRunner.dropForeignKey('user_project','userKey');
     }
 
 }

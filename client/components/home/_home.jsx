@@ -5,34 +5,41 @@ import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
+import { Project } from './Project';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const api = useContext(ApiContext);
 
   const [projects, setProjects] = useState([]);
+  
 
   useEffect(async () => {
-    //const { projects } = await api.get('/projects');
-    //setProjects(projects);
+    const { projects } = await api.get('/projects');
+    setProjects(projects);
   }, []);
 
   const createProject = async ()=>{
     const { project } = await api.post('/projects');
-
     setProjects([...projects, project]);
   }
 
+  const addUser = async (id,email)=>{
+    const emailBod = {
+      email: email
+    };
+    await api.post(`/projects/${id}`,emailBod)
+  }
+  
   return (
     <div className="p-4">
       <Button onClick={()=>{createProject()}}>Create New Project</Button>
-        {/* {projects.map((project) => (
+        {projects.map((project) => {
+          return (
           <div key={project.id}> 
-          Project Name: {project.id}
-            <div>
-            </div>
+          <Project project={project} addUser={addUser}/>
           </div>
-        ))} */}
+        )})}
     </div>
   );
 };
