@@ -15,21 +15,28 @@ export const Home = () => {
   
 
   useEffect(async () => {
+    resetProjects();
+  }, []);
+
+  const resetProjects = async ()=>{
     const { projects } = await api.get('/projects');
     setProjects(projects);
-  }, []);
+  }
 
   const createProject = async ()=>{
     const { project } = await api.post('/projects');
     setProjects([...projects, project]);
   }
 
-  const addUser = async (id,email)=>{
+  const addUser = async (id,email,update)=>{
     const emailBod = {
       email: email
     };
     await api.post(`/projects/${id}`,emailBod)
+    update();
   }
+
+  
   
   return (
     <div className="p-4">

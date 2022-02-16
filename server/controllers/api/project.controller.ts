@@ -22,8 +22,19 @@ export class projectController {
 
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
-    const projects = await this.user_projectService.findProjectsByUserId(jwtBody.userId);
+    const projectsU = await this.user_projectService.findProjectsByUserId(jwtBody.userId);
 
+    let projects = [];
+    let count = 0;
+
+    for (const item of projectsU) 
+    {
+      const hold = await this.projectService.findProjectById(item.projectId);
+      
+      projects[count] = hold;
+      
+      count++;
+    }
     return { projects };
   }
 
@@ -31,19 +42,40 @@ export class projectController {
   public async getDefaultUsers(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const project = await this.projectService.findProjectById(parseInt(id,10));
 
-    const users = await this.user_projectService.findUsersByProjectId(project.id);
+    if(project)
+    {
 
-    return { users };
+      let users = [];
+      let count = 0;
+
+      const usersP = await this.user_projectService.findUsersByProjectId(project.id);
+
+      for (const item of usersP) 
+      {
+        const hold = await this.userService.find(item.userId);
+        
+        users[count] = hold;
+        
+        count++;
+      }
+
+      return { users };
+    }
+    return { users: [] };
   }
 
   @Get('/projects/:id/lead')
   public async getleadUser(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const project = await this.projectService.findProjectById(parseInt(id,10));
+    if(project)
+    {
+      const userP = (await this.user_projectService.findProjectLeadByProjectId(project.id))[0];
+      const lead = await this.userService.find(userP.userId);
 
-    const userP = (await this.user_projectService.findProjectLeadByProjectId(project.id))[0];
-    const lead = await this.userService.find(userP.userId);
+      return { lead };
+    }
 
-    return { lead };
+    return { lead: undefined };
   }
 
   @Post('/projects')
@@ -59,13 +91,13 @@ export class projectController {
     await this.projectService.createProject(project);
     await this.user_projectService.create(user_projects);
 
+console.log(project);
+
     return { project };
   }
 
   @Post('/projects/:id')
   public async addUserToProject(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto, @Body() emailBod: emailBody) {
-console.log("madeit");
-
     const user_projects = new User_Project();
     const otherUser = await this.userService.findBy({
       where: { email: emailBod.email },
@@ -76,9 +108,26 @@ console.log("madeit");
       return { success: false };
     }
 
-    const project = await this.projectService.findProjectById(parseInt(id, 10));
+    const projectCheck = await this.user_projectService.findUsersByProjectId(parseInt(id,10));
 
-    if ((await this.user_projectService.findProjectLeadByProjectId(project.id))[0].id !== jwtBody.userId) {
+    let projectCheckSucc = false;
+
+    projectCheck.forEach((item)=>{
+      if(item.userId == otherUser.id)
+      {
+        projectCheckSucc = true;
+      }
+    })
+
+    if(projectCheckSucc)
+    {
+      return { success: false };
+    }
+
+    const project = await this.projectService.findProjectById(parseInt(id, 10));
+    const leadCheck = await this.user_projectService.findProjectLeadByProjectId(project.id);
+
+    if (!leadCheck[0].isProjectLead) {
       throw new HttpException('Unauthorized', 401);
     }
 
