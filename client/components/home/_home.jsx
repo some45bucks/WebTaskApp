@@ -1,7 +1,9 @@
-import { Button } from './button';
+import { Button } from '../common/button';
+import { Box } from '../common/box';
 import { useState, useContext, useEffect } from 'react';
 import { ApiContext } from '../../utils/api_context';
 import { notStrictEqual } from 'assert';
+import './home.css'
 //import { ApiContext } from '../../utils/api_content';
 
 export const Home = () => {
@@ -32,18 +34,22 @@ export const Home = () => {
   //   setNotes([...notes, note]); //get all notes from notes array, put into note
   // };
 
+  const [isOpen, setIsOpen] = useState(false);
+
+//TODO: condense boxes into a single class (like Button)
   return (
     <div className ="bg-blue-200">
-      <div className ="bg-blue-900/90 mr-1"> top bar </div>
-    <div className ="flex flex-row h-full"> 
+      <div className ="bg-blue-900/90 mr-1"> <button onClick={()=>setIsOpen(!isOpen)}> Open </button> top bar </div>
+      <div className={isOpen ? 'drawer drawer-open' : 'drawer'}></div>
+      <div className ="flex flex-row h-full"> 
       <div className ="bg-blue-900/90 flex-none w-1/6 mr-1 "> side bar </div>
-      <div className ="bg-blue-300/75 flex-1 rounded m-1 mb-1"> article1 </div>
-      <div className ="bg-blue-500/75 flex-1 rounded m-1 mb-1"> article2 </div>
-      <div className ="bg-blue-700/75 flex-1 rounded m-1 mb-1"> To-Do </div>
-      <div className ="bg-blue-900/75 flex-1 rounded m-1 mb-1"> Finished </div>
+      <div className ="bg-blue-300/75 box"> article1 </div>
+      <div className ="bg-blue-500/75 box"> article2 </div>
+      <div className ="bg-blue-700/75 box"> To-Do </div>
+      <div className ="bg-blue-900/75 box"> Finished </div>
     </div>
     </div>
-    
+
 
     // <div>
     //   <textarea 
