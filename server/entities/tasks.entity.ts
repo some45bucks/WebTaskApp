@@ -3,7 +3,7 @@ import { Project } from './project.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Tasks {
+export class Task {
   @PrimaryGeneratedColumn()
   id: number;
 

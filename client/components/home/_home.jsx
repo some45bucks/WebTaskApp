@@ -1,47 +1,45 @@
+import { debug } from 'console';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
+import { Project } from './Project';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const api = useContext(ApiContext);
-  const roles = useContext(RolesContext);
 
-  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
+  
 
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
   useEffect(async () => {
-    const res = await api.get('/users/me');
-    setUser(res.user);
-    setLoading(false);
+    const { projects } = await api.get('/projects');
+    setProjects(projects);
   }, []);
 
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
-  };
-
-  if (loading) {
-    return <div>Loading...</div>;
+  const createProject = async ()=>{
+    const { project } = await api.post('/projects');
+    setProjects([...projects, project]);
   }
 
+  const addUser = async (id,email)=>{
+    const emailBod = {
+      email: email
+    };
+    await api.post(`/projects/${id}`,emailBod)
+  }
+  
   return (
     <div className="p-4">
-      <h1>Welcome {user.firstName}</h1>
-      <Button type="button" onClick={logout}>
-        Logout
-      </Button>
-      {roles.includes('admin') && (
-        <Button type="button" onClick={() => navigate('/admin')}>
-          Admin
-        </Button>
-      )}
+      <Button onClick={()=>{createProject()}}>Create New Project</Button>
+        {projects.map((project) => {
+          return (
+          <div key={project.id}> 
+          <Project project={project} addUser={addUser}/>
+          </div>
+        )})}
     </div>
   );
 };
