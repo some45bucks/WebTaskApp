@@ -24,7 +24,6 @@ export class User_ProjectsService {
   }
 
   findProjectLeadByProjectId(projectId: number): Promise<User_Project[]> {
-
     return this.user_projectsRepository.find({
       where: { projectId, isProjectLead: true },
     });

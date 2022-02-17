@@ -12,7 +12,6 @@ export const Home = () => {
   const api = useContext(ApiContext);
 
   const [projects, setProjects] = useState([]);
-  
 
   useEffect(async () => {
     resetProjects();
@@ -24,7 +23,10 @@ export const Home = () => {
   }
 
   const createProject = async ()=>{
-    const { project } = await api.post('/projects');
+    const projectNameBody = {
+      name: 'Give Me a Name'
+    };
+    const { project } = await api.post('/projects',projectNameBody);
     setProjects([...projects, project]);
   }
 
@@ -36,8 +38,6 @@ export const Home = () => {
     update();
   }
 
-  
-  
   return (
     <div className="p-4">
       <Button onClick={()=>{createProject()}}>Create New Project</Button>

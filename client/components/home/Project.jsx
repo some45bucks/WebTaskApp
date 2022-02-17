@@ -6,6 +6,8 @@ export const Project = ({project,addUser}) => {
     const api = useContext(ApiContext);
     const [email, setEmail] = useState('');
     const [lead, setlead] = useState({firstName: "Loading..."});
+    //If we do the four column page then this will probaly need to go on the home page since 
+    //the users will be displayed seprate from the projects
     const [users, setUsers] = useState([]);
 
     useEffect(async () => {
