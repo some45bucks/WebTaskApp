@@ -1,4 +1,3 @@
-
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class projects1643860602685 implements MigrationInterface {
@@ -20,11 +19,9 @@ export class projects1643860602685 implements MigrationInterface {
         ],
       }),
     );
-
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('project');
   }
-
 }

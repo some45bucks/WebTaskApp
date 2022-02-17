@@ -1,4 +1,3 @@
-
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class tasks1643860614773 implements MigrationInterface {
@@ -49,32 +48,26 @@ export class tasks1643860614773 implements MigrationInterface {
 
     await queryRunner.createForeignKey(
       'task',
-      new TableForeignKey(
-        {
-          columnNames: ['projectId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: 'project',
-          onDelete: 'CASCADE',
-        }
-      )
+      new TableForeignKey({
+        columnNames: ['projectId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'project',
+        onDelete: 'CASCADE',
+      }),
     );
 
     await queryRunner.createForeignKey(
       'task',
-      new TableForeignKey(
-        {
-          columnNames: ['userId'],
-          referencedColumnNames: ['id'],
-          referencedTableName: 'user',
-          onDelete: 'CASCADE',
-        }
-      )
+      new TableForeignKey({
+        columnNames: ['userId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'user',
+        onDelete: 'CASCADE',
+      }),
     );
-
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('task');
   }
-
 }
