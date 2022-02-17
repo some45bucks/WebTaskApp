@@ -24,9 +24,10 @@ export const Project = ({ project, addUser }) => {
       setUsers(users);
     }
   };
+  
 
   return (
-    <div className="flex-1 border-2 rounded p-2 h-max bg-blue-500">
+    <div className="flex-1 border-2 rounded p-2 m-2 bg-blue-500" onClick={() => console.log('yeet')}>
       <div>Project name: {project.name}</div>
       <div>Project id: {project.id}</div>
       <div>Lead: {lead.firstName}</div>

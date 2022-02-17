@@ -37,7 +37,7 @@ export const Home = () => {
 
   return (
     <div className="bg-blue-200">
-      <div className="bg-blue-900/90 mr-1">
+      <div className="bg-blue-900/90">
         <Button
           onClick={() => {
             createProject();
@@ -47,16 +47,20 @@ export const Home = () => {
         </Button>{' '}
       </div>
       <div className="flex flex-row h-full">
-        <div className="bg-blue-900/90 flex-none w-1/6 mr-1 flex-shrink-0"> side bar </div>
-        <div className="flex flex-wrap rounded m-1 max-h-screen overflow-y-auto">
-          {projects.map((project) => {
-            return (
-              <div key={project.id}>
-                <Project project={project} addUser={addUser} />
-              </div>
-            );
-          })}
+        <div className="bg-blue-900/90 flex-none w-1/6 mr-1 max-h-screen overflow-y-auto">
+          <div className="bg-blue-200">
+            {projects.map((project) => {
+              return (
+                <div key={project.id}>
+                  <Project project={project} addUser={addUser} />
+                </div>
+              );
+            })}
+          </div>
         </div>
+        <div className="bg-blue-500/75 m-5 rounded flex-1"> article2 </div>
+        <div className="bg-blue-700/75 m-5 rounded flex-1"> To-Do </div>
+        <div className="bg-blue-900/75 m-5 rounded flex-1"> Finished </div>
       </div>
     </div>
   );
