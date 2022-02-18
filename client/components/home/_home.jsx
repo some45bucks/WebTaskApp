@@ -22,8 +22,13 @@ export const Home = () => {
     setProjects(projects);
   };
 
-  const createProject = async () => {
-    const { project } = await api.post('/projects');
+
+  const createProject = async ()=>{
+    const projectNameBody = {
+      name: 'Give Me a Name'
+    };
+    const { project } = await api.post('/projects',projectNameBody);
+
     setProjects([...projects, project]);
   };
 

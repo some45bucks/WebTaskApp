@@ -20,6 +20,7 @@ export class TasksService {
     });
   }
 
+  //Prolly not useful for us
   findTasksByUser(userId: number): Promise<Task[]> {
     return this.tasksRepository.find({
       where: { userId },
