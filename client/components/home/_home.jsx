@@ -15,38 +15,41 @@ export const Home = () => {
 
   useEffect(async () => {
     resetProjects();
+    const { message } = await api.get('/tasks')
+    console.log(message)
   }, []);
 
-  const resetProjects = async ()=>{
+  const resetProjects = async () => {
     const { projects } = await api.get('/projects');
     setProjects(projects);
   }
 
-  const createProject = async ()=>{
+  const createProject = async () => {
     const projectNameBody = {
       name: 'Give Me a Name'
     };
-    const { project } = await api.post('/projects',projectNameBody);
+    const { project } = await api.post('/projects', projectNameBody);
     setProjects([...projects, project]);
   }
 
-  const addUser = async (id,email,update)=>{
+  const addUser = async (id, email, update) => {
     const emailBod = {
       email: email
     };
-    await api.post(`/projects/${id}`,emailBod)
+    await api.post(`/projects/${id}`, emailBod)
     update();
   }
 
   return (
     <div className="p-4">
-      <Button onClick={()=>{createProject()}}>Create New Project</Button>
-        {projects.map((project) => {
-          return (
-          <div key={project.id}> 
-          <Project project={project} addUser={addUser}/>
+      <Button onClick={() => { createProject() }}>Create New Project</Button>
+      {projects.map((project) => {
+        return (
+          <div key={project.id}>
+            <Project project={project} addUser={addUser} />
           </div>
-        )})}
+        )
+      })}
     </div>
   );
 };
