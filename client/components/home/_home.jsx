@@ -35,6 +35,16 @@ export const Home = () => {
     update();
   };
 
+  const openInfo = async (id) => {
+    console.log("hey i made it!");
+    console.log(id);
+  };
+
+  handleClick = (e, data) => {
+    // access to e.target here
+    console.log(data);
+  };
+
   return (
     <div className="bg-blue-200">
       <div className="bg-blue-900/90">
@@ -52,13 +62,13 @@ export const Home = () => {
             {projects.map((project) => {
               return (
                 <div key={project.id}>
-                  <Project project={project} addUser={addUser} />
+                  <Project project={project} addUser={addUser} openInfo={openInfo} />
                 </div>
               );
             })}
           </div>
         </div>
-        <div className="bg-blue-500/75 m-5 rounded flex-1"> article2 </div>
+        <div className="bg-blue-500/75 m-5 rounded flex-1"> Other Users </div>
         <div className="bg-blue-700/75 m-5 rounded flex-1"> To-Do </div>
         <div className="bg-blue-900/75 m-5 rounded flex-1"> Finished </div>
       </div>

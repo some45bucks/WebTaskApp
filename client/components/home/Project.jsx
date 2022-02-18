@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../utils/api_context';
 import { Button } from '../common/button';
 
-export const Project = ({ project, addUser }) => {
+export const Project = ({ project, addUser, openInfo }) => {
   const api = useContext(ApiContext);
   const [email, setEmail] = useState('');
   const [lead, setlead] = useState({ firstName: 'Loading...' });
@@ -27,7 +27,7 @@ export const Project = ({ project, addUser }) => {
   
 
   return (
-    <div className="flex-1 border-2 rounded p-2 m-2 bg-blue-500" onClick={() => console.log('yeet')}>
+    <div className="flex-1 border-2 rounded p-2 m-2 bg-blue-500" onClick={() => console.log('2')}>
       <div>Project name: {project.name}</div>
       <div>Project id: {project.id}</div>
       <div>Lead: {lead.firstName}</div>
@@ -45,6 +45,7 @@ export const Project = ({ project, addUser }) => {
           <div> <Button onClick={() => console.log(project.id)}>Add Task</Button> </div>
 
           <div> <Button onClick={() => addUser(project.id, email, update)}>Add User</Button> </div>
+          <div> <Button onClick={() => openInfo(project.id)}>Open</Button> </div>
           <div>
         <label htmlFor="emailEnter">User Email:</label>
         <input
