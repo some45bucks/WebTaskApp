@@ -3,7 +3,7 @@ import { Project } from './project.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Tasks {
+export class Task {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,10 +14,10 @@ export class Tasks {
   projectId: number;
 
   @Column({ nullable: false })
-  title: Text;
+  title: string;
 
   @Column({ nullable: false })
-  description: Text;
+  description: string;
 
   @Column({ nullable: false })
   timeEst: number;

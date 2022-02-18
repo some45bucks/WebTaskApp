@@ -3,7 +3,7 @@ import { Project } from './project.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class User_Projects {
+export class User_Project {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,9 +16,9 @@ export class User_Projects {
   @Column({ nullable: false })
   isProjectLead: boolean;
 
-  @ManyToOne(() => User, (user) => user.userProjects)
+  @ManyToOne(() => User, (user) => user.userProject)
   user: User;
 
-  @ManyToOne(() => Project, (project) => project.userProjects)
+  @ManyToOne(() => Project, (project) => project.userProject)
   project: Project;
 }

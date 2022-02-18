@@ -1,47 +1,77 @@
+import { debug } from 'console';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
+import { Project } from './Project';
 
 export const Home = () => {
   const [, setAuthToken] = useContext(AuthContext);
   const api = useContext(ApiContext);
-  const roles = useContext(RolesContext);
 
-  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
 
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
   useEffect(async () => {
-    const res = await api.get('/users/me');
-    setUser(res.user);
-    setLoading(false);
+    resetProjects();
   }, []);
 
-  const logout = async () => {
-    const res = await api.del('/sessions');
-    if (res.success) {
-      setAuthToken(null);
-    }
+  const resetProjects = async () => {
+    const { projects } = await api.get('/projects');
+    setProjects(projects);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const createProject = async () => {
+    const { project } = await api.post('/projects');
+    setProjects([...projects, project]);
+  };
+
+  const addUser = async (id, email, update) => {
+    const emailBod = {
+      email: email,
+    };
+    await api.post(`/projects/${id}`, emailBod);
+    update();
+  };
+
+  const openInfo = async (id) => {
+    console.log("hey i made it!");
+    console.log(id);
+  };
+
+  handleClick = (e, data) => {
+    // access to e.target here
+    console.log(data);
+  };
 
   return (
-    <div className="p-4">
-      <h1>Welcome {user.firstName}</h1>
-      <Button type="button" onClick={logout}>
-        Logout
-      </Button>
-      {roles.includes('admin') && (
-        <Button type="button" onClick={() => navigate('/admin')}>
-          Admin
-        </Button>
-      )}
+    <div className="bg-blue-200">
+      <div className="bg-blue-900/90">
+        <Button
+          onClick={() => {
+            createProject();
+          }}
+        >
+          Create New Project
+        </Button>{' '}
+      </div>
+      <div className="flex flex-row h-full">
+        <div className="bg-blue-900/90 flex-none w-1/6 mr-1 max-h-screen overflow-y-auto">
+          <div className="bg-blue-200">
+            {projects.map((project) => {
+              return (
+                <div key={project.id}>
+                  <Project project={project} addUser={addUser} openInfo={openInfo} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="bg-blue-500/75 m-5 rounded flex-1"> Other Users </div>
+        <div className="bg-blue-700/75 m-5 rounded flex-1"> To-Do </div>
+        <div className="bg-blue-900/75 m-5 rounded flex-1"> Finished </div>
+      </div>
     </div>
   );
 };
