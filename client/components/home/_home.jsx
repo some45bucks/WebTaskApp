@@ -35,19 +35,11 @@ export const Home = () => {
     update();
   };
 
-  const openInfo = async (id) => {
-    console.log("hey i made it!");
-    console.log(id);
-  };
-
-  handleClick = (e, data) => {
-    // access to e.target here
-    console.log(data);
-  };
 
   return (
     <div className="bg-blue-200">
       <div className="bg-blue-900/90">
+                          {/* TODO: make this button look nicer */}
         <Button
           onClick={() => {
             createProject();
@@ -57,20 +49,22 @@ export const Home = () => {
         </Button>{' '}
       </div>
       <div className="flex flex-row h-full">
+{/* TODO: the whole page is too big (so it scrolls), can't figure it out, height of this div seems to be the problem*/}
         <div className="bg-blue-900/90 flex-none w-1/6 mr-1 max-h-screen overflow-y-auto">
           <div className="bg-blue-200">
             {projects.map((project) => {
               return (
                 <div key={project.id}>
-                  <Project project={project} addUser={addUser} openInfo={openInfo} />
+                  <Project project={project} addUser={addUser} />
                 </div>
               );
             })}
           </div>
         </div>
-        <div className="bg-blue-500/75 m-5 rounded flex-1"> Other Users </div>
-        <div className="bg-blue-700/75 m-5 rounded flex-1"> To-Do </div>
-        <div className="bg-blue-900/75 m-5 rounded flex-1"> Finished </div>
+                  {/* TODO: clean these up into some component? */}
+        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md"> Other Users </div>
+        <div className="bg-blue-700/75 m-5 rounded flex-1 shadow-md"> To-Do </div>
+        <div className="bg-blue-900/75 m-5 rounded flex-1 shadow-md"> Finished </div>
       </div>
     </div>
   );

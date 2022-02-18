@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../utils/api_context';
 import { Button } from '../common/button';
 
-export const Project = ({ project, addUser, openInfo }) => {
+export const Project = ({ project, addUser}) => {
   const api = useContext(ApiContext);
   const [email, setEmail] = useState('');
   const [lead, setlead] = useState({ firstName: 'Loading...' });
@@ -26,6 +26,7 @@ export const Project = ({ project, addUser, openInfo }) => {
   };
   
 
+          {/* Holds all project information (to be spliced up into their appropriate columns) */}
   return (
     <div className="flex-1 border-2 rounded p-2 m-2 bg-blue-500" onClick={() => console.log('2')}>
       <div>Project name: {project.name}</div>
@@ -45,7 +46,6 @@ export const Project = ({ project, addUser, openInfo }) => {
           <div> <Button onClick={() => console.log(project.id)}>Add Task</Button> </div>
 
           <div> <Button onClick={() => addUser(project.id, email, update)}>Add User</Button> </div>
-          <div> <Button onClick={() => openInfo(project.id)}>Open</Button> </div>
           <div>
         <label htmlFor="emailEnter">User Email:</label>
         <input
