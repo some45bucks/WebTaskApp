@@ -80,7 +80,7 @@ This will create the database, run the migrations, and run the seeds for you.
 ### Migrations
 Any time you want make changes to your database schema you will need to generate a migration file
 ```bash
-yarn db:migration:generate AddContextToRoles # replace this name with a name that describes your migration
+yarn db:migration:create AddContextToRoles # replace this name with a name that describes your migration
 ```
 Open that migration file and make the changes. Then, when you are ready
 ```bash
