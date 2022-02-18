@@ -15,8 +15,9 @@ export const Home = () => {
 
   useEffect(async () => {
     resetProjects();
-    const { message } = await api.get('/tasks')
-    console.log(message)
+    //REMOVE ME -- Hello world test
+    const { tasks } = await api.get('/tasks')
+    console.log(tasks)
   }, []);
 
   const resetProjects = async () => {
