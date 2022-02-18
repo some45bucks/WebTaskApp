@@ -12,11 +12,12 @@ export const Home = () => {
   const api = useContext(ApiContext);
 
   const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(async () => {
     resetProjects();
     //REMOVE ME -- Hello world test
-    const { tasks } = await api.get('/tasks')
+    const { tasks } = await api.get(`/tasks/${'6'}`)
     console.log(tasks)
   }, []);
 

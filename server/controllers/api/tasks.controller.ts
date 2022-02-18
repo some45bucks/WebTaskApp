@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { JwtBody } from "server/decorators/jwt_body.decorator";
 import { JwtBodyDto } from "server/dto/jwt_body.dto";
 import { Task } from "server/entities/tasks.entity";
@@ -22,6 +22,12 @@ export class TaskController {
         return { tasks };
     }
 
+    @Get('/tasks/:projectID')
+    public async getDefaultUsers(@Param('projectID') projectID: string, @JwtBody() jwtBody: JwtBodyDto) {
+        const tasks = await this.tasksService.findTasksByProject(parseInt(projectID, 10));
+        return { tasks }
+    }
+
     @Post('/tasks')
     public async create(@JwtBody() JwtBody: JwtBodyDto, @Body() body: taskBody) {
         let task = new Task();
@@ -37,4 +43,5 @@ export class TaskController {
         return { task }
 
     }
+
 }
