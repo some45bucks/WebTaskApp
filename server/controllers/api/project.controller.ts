@@ -19,6 +19,7 @@ class projectNameBody {
 
 @Controller()
 export class projectController {
+  
   constructor(
     private projectService: ProjectsService,
     private user_projectService: User_ProjectsService,
@@ -50,8 +51,10 @@ export class projectController {
   public async getDefaultUsers(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const project = await this.projectService.findProjectById(parseInt(id, 10));
 
+
     //makes sure project exists
     if (project) {
+
       const users = [];
       let count = 0;
 
@@ -79,6 +82,7 @@ export class projectController {
 
     //makes sure project exists
     if (project) {
+
       const userP = (await this.user_projectService.findProjectLeadByProjectId(project.id))[0];
 
       //converts from connection to actual user object
@@ -115,22 +119,21 @@ export class projectController {
     const project = await this.projectService.findProjectById(parseInt(id, 10));
 
     //makes sure project exists
-    if (project) {
+    if(project)
+    {
       //Finds by email
-      const otherUser = await this.userService.findBy({
-        where: { email: emailBod.email },
-      });
+    const otherUser = await this.userService.findBy({
+      where: { email: emailBod.email },
+    });
 
-      //Makes sure it exists
-      if (!otherUser) {
-        return { success: false, reason: 'Other User Dosent exist' };
-      }
+    //Makes sure it exists
+    if (!otherUser) {
+      return { success: false, reason: 'Other User Dosent exist' };
+    }
 
-      //checks to see if user is in project already
-      const projectCheck = await this.user_projectService.findUsersByProjectId(parseInt(id, 10));
-
+    //checks to see if user is in project already
+    const projectCheck = await this.user_projectService.findUsersByProjectId(parseInt(id, 10));
       let projectCheckSucc = false;
-
       projectCheck.forEach((item) => {
         if (item.userId == otherUser.id) {
           projectCheckSucc = true;
@@ -158,7 +161,6 @@ export class projectController {
 
       return { success: true, reason: '' };
     }
-
     throw new HttpException('Project does not exist', 404);
   }
 }
