@@ -151,7 +151,7 @@ export const Home = () => {
       <div className="bg-blue-900/90">        
       </div>
       <div className="flex flex-row h-full">
-        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md">
+        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto">
         <Button
           onClick={() => {
             createProject();
@@ -171,7 +171,7 @@ export const Home = () => {
             })}
         </div>
                   {/* TODO: clean these up into some component? */}
-        <div className="bg-blue-600/75 m-5 rounded flex-1 shadow-md"> 
+        <div className="bg-blue-600/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto"> 
         <div> <Button onClick={() => addUser(focusProject.id, email)}>Add User</Button> <label htmlFor="emailEnter">User Email:</label>
         <input
           className="border-2"
@@ -190,7 +190,7 @@ export const Home = () => {
                 </div>
               );
             })} </div>
-        <div className="bg-blue-700/75 m-5 rounded flex-1 shadow-md"> 
+        <div className="bg-blue-700/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto"> 
         <div> <Button onClick={() => addTask(focusProject.id,'title','description',10)}>Add Task</Button> </div>
         {tasks.map((task) => {
               return (
