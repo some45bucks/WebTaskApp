@@ -19,13 +19,12 @@ class projectNameBody {
 
 @Controller()
 export class projectController {
-  
   constructor(
     private projectService: ProjectsService,
     private user_projectService: User_ProjectsService,
     private userService: UsersService,
   ) {}
-  
+
   //This will return a list of project objects
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
@@ -53,12 +52,11 @@ export class projectController {
 
     //makes sure project exists
     if (project) {
-
       const users = [];
       let count = 0;
 
       const usersP = await this.user_projectService.findUsersByProjectId(project.id);
-      
+
       //converts from connections to actual user objects
       for (const item of usersP) {
         const hold = await this.userService.find(item.userId);
@@ -81,7 +79,6 @@ export class projectController {
 
     //makes sure project exists
     if (project) {
-
       const userP = (await this.user_projectService.findProjectLeadByProjectId(project.id))[0];
 
       //converts from connection to actual user object
@@ -118,49 +115,48 @@ export class projectController {
     const project = await this.projectService.findProjectById(parseInt(id, 10));
 
     //makes sure project exists
-    if(project)
-    {
+    if (project) {
       //Finds by email
-    const otherUser = await this.userService.findBy({
-      where: { email: emailBod.email },
-    });
+      const otherUser = await this.userService.findBy({
+        where: { email: emailBod.email },
+      });
 
-    //Makes sure it exists
-    if (!otherUser) {
-      return { success: false, reason: 'Other User Dosent exist' };
-    }
-
-    //checks to see if user is in project already
-    const projectCheck = await this.user_projectService.findUsersByProjectId(parseInt(id, 10));
-
-    let projectCheckSucc = false;
-
-    projectCheck.forEach((item) => {
-      if (item.userId == otherUser.id) {
-        projectCheckSucc = true;
+      //Makes sure it exists
+      if (!otherUser) {
+        return { success: false, reason: 'Other User Dosent exist' };
       }
-    });
 
-    if (projectCheckSucc) {
-      return { success: false, reason: 'User Already On Project' };
-    }
+      //checks to see if user is in project already
+      const projectCheck = await this.user_projectService.findUsersByProjectId(parseInt(id, 10));
 
-    //makes sure user is the lead
-    const leadCheck = await this.user_projectService.findProjectLeadByProjectId(project.id);
+      let projectCheckSucc = false;
 
-    if (leadCheck[0].userId !== jwtBody.userId) {
-      throw new HttpException('Unauthorized', 401);
-    }
+      projectCheck.forEach((item) => {
+        if (item.userId == otherUser.id) {
+          projectCheckSucc = true;
+        }
+      });
 
-    //create new user_project connection
-    const user_projects = new User_Project();
-    user_projects.projectId = project.id;
-    user_projects.userId = otherUser.id;
-    user_projects.isProjectLead = false;
+      if (projectCheckSucc) {
+        return { success: false, reason: 'User Already On Project' };
+      }
 
-    await this.user_projectService.create(user_projects);
+      //makes sure user is the lead
+      const leadCheck = await this.user_projectService.findProjectLeadByProjectId(project.id);
 
-    return { success: true, reason: '' };
+      if (leadCheck[0].userId !== jwtBody.userId) {
+        throw new HttpException('Unauthorized', 401);
+      }
+
+      //create new user_project connection
+      const user_projects = new User_Project();
+      user_projects.projectId = project.id;
+      user_projects.userId = otherUser.id;
+      user_projects.isProjectLead = false;
+
+      await this.user_projectService.create(user_projects);
+
+      return { success: true, reason: '' };
     }
 
     throw new HttpException('Project does not exist', 404);
