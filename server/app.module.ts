@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { config } from './database/config';
 import { ProjectModule } from './modules/projects.module';
+import { TasksModule } from './modules/tasks.module';
 import { UsersModule } from './modules/users.module';
 import { AuthGuard } from './providers/guards/auth.guard';
 import { RolesGuard } from './providers/guards/roles.guard';
@@ -13,7 +14,7 @@ import { UsersService } from './providers/services/users.service';
 import { GuardUtil } from './providers/util/guard.util';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), UsersModule, ProjectModule],
+  imports: [TypeOrmModule.forRoot(config), UsersModule, ProjectModule, TasksModule],
   controllers: [AppController],
   providers: [
     UsersService,
@@ -24,4 +25,4 @@ import { GuardUtil } from './providers/util/guard.util';
     { provide: APP_GUARD, useClass: RolesGuard }, // otherwise users won't be authenticated before roles check
   ],
 })
-export class AppModule {}
+export class AppModule { }

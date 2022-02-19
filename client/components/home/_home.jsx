@@ -13,14 +13,20 @@ export const Home = () => {
   const api = useContext(ApiContext);
 
   const [projects, setProjects] = useState([]);
+
   const [users, setUsers] = useState([]);
   const [focusProject, setFocusProject] = useState();
   const [lead, setlead] = useState({ firstName: 'Loading...' });
-
+  
   useEffect(async () => {
+    resetProjects();
+  }, []);
+  
+   const resetProjects = async () => {
     const { projects } = await api.get('/projects');
     setProjects(projects);
   }, []);
+
 
   const createProject = async ()=>{
     const projectNameBody = {
@@ -31,10 +37,12 @@ export const Home = () => {
     setProjects([...projects, project]);
   };
 
+
   const addUser = async (id, email) => {
     const emailBod = {
       email: email,
     };
+
     await api.post(`/projects/${id}`, emailBod);
 
     update();

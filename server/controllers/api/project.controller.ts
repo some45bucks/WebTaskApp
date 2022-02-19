@@ -25,7 +25,7 @@ export class projectController {
     private user_projectService: User_ProjectsService,
     private userService: UsersService,
   ) {}
-  
+
   //This will return a list of project objects
   @Get('/projects')
   public async index(@JwtBody() jwtBody: JwtBodyDto) {
@@ -51,6 +51,7 @@ export class projectController {
   public async getDefaultUsers(@Param('id') id: string, @JwtBody() jwtBody: JwtBodyDto) {
     const project = await this.projectService.findProjectById(parseInt(id, 10));
 
+
     //makes sure project exists
     if (project) {
 
@@ -58,7 +59,7 @@ export class projectController {
       let count = 0;
 
       const usersP = await this.user_projectService.findUsersByProjectId(project.id);
-      
+
       //converts from connections to actual user objects
       for (const item of usersP) {
         const hold = await this.userService.find(item.userId);
@@ -132,37 +133,34 @@ export class projectController {
 
     //checks to see if user is in project already
     const projectCheck = await this.user_projectService.findUsersByProjectId(parseInt(id, 10));
+      let projectCheckSucc = false;
+      projectCheck.forEach((item) => {
+        if (item.userId == otherUser.id) {
+          projectCheckSucc = true;
+        }
+      });
 
-    let projectCheckSucc = false;
-
-    projectCheck.forEach((item) => {
-      if (item.userId == otherUser.id) {
-        projectCheckSucc = true;
+      if (projectCheckSucc) {
+        return { success: false, reason: 'User Already On Project' };
       }
-    });
 
-    if (projectCheckSucc) {
-      return { success: false, reason: 'User Already On Project' };
+      //makes sure user is the lead
+      const leadCheck = await this.user_projectService.findProjectLeadByProjectId(project.id);
+
+      if (leadCheck[0].userId !== jwtBody.userId) {
+        throw new HttpException('Unauthorized', 401);
+      }
+
+      //create new user_project connection
+      const user_projects = new User_Project();
+      user_projects.projectId = project.id;
+      user_projects.userId = otherUser.id;
+      user_projects.isProjectLead = false;
+
+      await this.user_projectService.create(user_projects);
+
+      return { success: true, reason: '' };
     }
-
-    //makes sure user is the lead
-    const leadCheck = await this.user_projectService.findProjectLeadByProjectId(project.id);
-
-    if (leadCheck[0].userId !== jwtBody.userId) {
-      throw new HttpException('Unauthorized', 401);
-    }
-
-    //create new user_project connection
-    const user_projects = new User_Project();
-    user_projects.projectId = project.id;
-    user_projects.userId = otherUser.id;
-    user_projects.isProjectLead = false;
-
-    await this.user_projectService.create(user_projects);
-
-    return { success: true, reason: '' };
-    }
-
     throw new HttpException('Project does not exist', 404);
   }
 }
