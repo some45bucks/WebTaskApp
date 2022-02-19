@@ -99,14 +99,37 @@ export const Home = () => {
       const {tasks} = await api.get(`/tasks/${focusProject.id}`);
       setTasks(tasks);
     }
-  }
-
-  
+  } 
 
   //These functions need to use the task controller
   const assignUser = async (task)=> {
+    
     //This will add the current focused user to the task, but only if they are the project lead other wise it will only add themselves
-    console.log(task.id + " " + focusUser.id)
+
+    if (lead) {
+      const  newAssingedUser = {
+        taskID: task.id,
+        userID: focusUser.id,
+      };
+
+      await api.post('/updateUser', newAssingedUser);
+
+      update();
+    }
+
+    else {
+      const  newAssingedUser = {
+        taskID: task.id,
+        userID: user.id,
+      };
+
+      await api.post('/updateUser', newAssingedUser);
+
+      update();
+    } 
+    
+
+    console.log(task.id + " " + focusUser.id + " " + task.userID)
   }
 
   const completeTask = async (task) => {
@@ -118,7 +141,7 @@ export const Home = () => {
 
     console.log(`Before: ${task.status}`);
 
-    await api.post(`/completeTask/`, completeTask);
+    await api.post(`/completeTask`, completeTask);
     update();   
   }
 
