@@ -12,6 +12,15 @@ class taskBody {
   status: boolean;
 }
 
+class newAssingedUser {
+  taskID: number;
+  userID: number;
+}
+
+class completeTask {
+    taskID: number;
+}
+
 @Controller()
 export class TaskController {
   constructor(private tasksService: TasksService) {}
@@ -41,4 +50,16 @@ export class TaskController {
 
     return { task };
   }
+
+  @Post('/completeTask/')
+  public async updateAssignedUSer(@JwtBody() JwtBody: JwtBodyDto, @Body() body: completeTask) {
+      let task = await this.tasksService.findTasksById(body.taskID);
+
+      task.status = !task.status;
+
+      task = await this.tasksService.createTasks(task);
+
+      return {task};   
+  }
+
 }

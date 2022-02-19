@@ -110,8 +110,16 @@ export const Home = () => {
   }
 
   const completeTask = async (task) => {
-    //This will complete a task
-    console.log(task.id);
+    //This will complete a task 
+    
+    const completeTask = {
+      taskID: task.id,
+    };
+
+    console.log(`Before: ${task.status}`);
+
+    await api.post(`/completeTask/`, completeTask);
+    update();   
   }
 
   //put in way to put in new project name
