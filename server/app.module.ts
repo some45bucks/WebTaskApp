@@ -25,4 +25,4 @@ import { GuardUtil } from './providers/util/guard.util';
     { provide: APP_GUARD, useClass: RolesGuard }, // otherwise users won't be authenticated before roles check
   ],
 })
-export class AppModule { }
+export class AppModule {}

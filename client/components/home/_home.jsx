@@ -1,11 +1,13 @@
 import { debug } from 'console';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { async, asyncScheduler } from 'rxjs';
 import { ApiContext } from '../../utils/api_context';
 import { AuthContext } from '../../utils/auth_context';
 import { RolesContext } from '../../utils/roles_context';
 import { Button } from '../common/button';
 import { Project } from './Project';
+import { Task } from './Task';
 import { User } from './User';
 
 export const Home = () => {
@@ -16,16 +18,19 @@ export const Home = () => {
 
   const [users, setUsers] = useState([]);
   const [focusProject, setFocusProject] = useState();
+  const [focusUser, setFocusUser] = useState();
   const [lead, setlead] = useState({ firstName: 'Loading...' });
+  const [tasks, setTasks] = useState([]);
+  const [email, setEmail] = useState('');
   
   useEffect(async () => {
     resetProjects();
   }, []);
   
-   const resetProjects = async () => {
+  const resetProjects = async () => {
     const { projects } = await api.get('/projects');
     setProjects(projects);
-  }, []);
+  };
 
 
   const createProject = async ()=>{
@@ -48,27 +53,41 @@ export const Home = () => {
     update();
   };
 
+  const addTask = async (projectID,title,description,timeEst) => {
+
+    const taskBody = {
+      projectID: projectID,
+      title: title,
+      description: description,
+      timeEst: timeEst,
+      status: false,
+    };
+    await api.post(`/tasks`, taskBody);
+
+    update();
+  };
+
   const projectClick = async (project) => {
     if (project) {
-      
-      console.log(project.id);
-
       setFocusProject(project);
 
       const { lead } = await api.get(`/projects/${project.id}/lead`);
       if (lead) {
         setlead(lead);
       }
-
       const {users} = await api.get(`/projects/${project.id}/default`);
       setUsers(users);
+
+      const {tasks} = await api.get(`/tasks/${project.id}`);
+      setTasks(tasks);
+
+      setFocusUser();
     }
   }
 
   const update = async () => {
     if (focusProject) {
-      console.log(focusProject.id);
-
+      
       const { lead } = await api.get(`/projects/${focusProject.id}/lead`);
       if (lead) {
         setlead(lead);
@@ -76,14 +95,32 @@ export const Home = () => {
 
       const {users} = await api.get(`/projects/${focusProject.id}/default`);
       setUsers(users);
+
+      const {tasks} = await api.get(`/tasks/${focusProject.id}`);
+      setTasks(tasks);
     }
+  }
+
+  
+
+  //These functions need to use the task controller
+  const assignUser = async (task)=> {
+    //This will add the current focused user to the task, but only if they are the project lead other wise it will only add themselves
+    console.log(task.id + " " + focusUser.id)
+  }
+
+  const completeTask = async (task) => {
+    //This will complete a task
+    console.log(task.id);
   }
 
   //put in way to put in new project name
   return (
     <div className="bg-blue-200">
-      <div className="bg-blue-900/90">
-                          {/* TODO: make this button look nicer */}
+      <div className="bg-blue-900/90">        
+      </div>
+      <div className="flex flex-row h-full">
+        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md">
         <Button
           onClick={() => {
             createProject();
@@ -91,31 +128,46 @@ export const Home = () => {
         >
           Create New Project
         </Button>{' '}
-      </div>
-      <div className="flex flex-row h-full">
-{/* TODO: the whole page is too big (so it scrolls), can't figure it out, height of this div seems to be the problem*/}
-        <div className="bg-blue-900/90 flex-none w-1/6 mr-1 max-h-screen overflow-y-auto">
-          <div className="bg-blue-200">
             {projects.map((project) => {
+
+              const isSelected = focusProject && project.id === focusProject.id;
+
               return (
                 <div key={project.id}>
-                  <Project project={project} addUser={addUser} myOnClick={projectClick}/>
+                  <Project project={project} myOnClick={projectClick} isSelected={isSelected}/>
                 </div>
               );
             })}
-          </div>
         </div>
                   {/* TODO: clean these up into some component? */}
-        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md"> 
+        <div className="bg-blue-600/75 m-5 rounded flex-1 shadow-md"> 
+        <div> <Button onClick={() => addUser(focusProject.id, email)}>Add User</Button> <label htmlFor="emailEnter">User Email:</label>
+        <input
+          className="border-2"
+          id="emailEnter"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+        /></div>
         {users.map((user) => {
+
+              const isSelected = focusUser && user.id === focusUser.id;
+
               return (
                 <div key={user.id}>
-                  <User user={user} lead={lead}/>
+                  <User user={user} lead={lead} setFocus={setFocusUser} isSelected={isSelected}/>
                 </div>
               );
             })} </div>
-        <div className="bg-blue-700/75 m-5 rounded flex-1 shadow-md"> To-Do </div>
-        <div className="bg-blue-900/75 m-5 rounded flex-1 shadow-md"> Finished </div>
+        <div className="bg-blue-700/75 m-5 rounded flex-1 shadow-md"> 
+        <div> <Button onClick={() => addTask(focusProject.id,'title','description',10)}>Add Task</Button> </div>
+        {tasks.map((task) => {
+              return (
+                <div key={task.id}>
+                  <Task task={task} completeTask={completeTask} addUser={assignUser}/>
+                </div>
+              );
+            })} </div>
       </div>
     </div>
   );
