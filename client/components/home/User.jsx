@@ -2,21 +2,11 @@ import { useContext} from 'react';
 import { ApiContext } from '../../utils/api_context';
 
 
-export const User = ({user,lead})=>{
+export const User = ({user,lead,setFocus,isSelected})=>{
     const api = useContext(ApiContext);
-
-    if(user.id == lead.id)
-    {
-        return (
-            <div class="border-2">
-                LEAD {user.firstName}
-            </div>
-        )
-    }
-
     return (
-        <div>
-           User {user.firstName}
+        <div className={`flex-1 border-2 rounded p-2 m-2 bg-${(isSelected) ? 'red':'blue'}-500`} onClick={()=>setFocus(user)}>
+           {(user.id == lead.id) ? 'Lead': 'User'} {user.firstName}
         </div>
     )
 }
