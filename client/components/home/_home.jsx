@@ -50,15 +50,15 @@ export const Home = () => {
     setProjects([...projects, project]);
   };
 
-  const addProjectName = async (id, newName) => {
-    const projectNameBody = {
-      name: newName,
-    };
+  // const addProjectName = async (id, newName) => {
+  //   const projectNameBody = {
+  //     name: newName,
+  //   };
 
-    await api.post(`/projects/${id}`, projectNameBody);
+  //   await api.post(`/projects/${id}`, projectNameBody);
 
-    update();
-  };
+  //   update();
+  // };
 
   const addUser = async (id, email) => {
     const emailBod = {
@@ -196,3 +196,14 @@ export const Home = () => {
     </div>
   );
 };
+
+// export const addProjectName = async (id, newName) => {
+//   const api = useContext(ApiContext);
+//   const projectNameBody = {
+//     name: newName,
+//   };
+
+//   await api.post(`/projects/${id}`, projectNameBody);
+
+//   update();
+// }
