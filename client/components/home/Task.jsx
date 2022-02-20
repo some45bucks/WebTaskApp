@@ -3,6 +3,7 @@ import { Task } from '../common/task';
 export const Task = ({task,completeTask,addUser}) => {
 
     return(
+
         <div className={`flex-1 text-left border-2 rounded p-2 m-2 bg-${(task.status) ? 'green':'red'}-500`}>
             <div>{task.title}</div>
             <div>{task.timeEst}</div>

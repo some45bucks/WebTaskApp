@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Param, Post } from '@nestjs/common';
 import { JwtBody } from 'server/decorators/jwt_body.decorator';
 import { JwtBodyDto } from 'server/dto/jwt_body.dto';
 import { Task } from 'server/entities/tasks.entity';
@@ -10,6 +10,15 @@ class taskBody {
   description: string;
   timeEst: number;
   status: boolean;
+}
+
+class newAssingedUser {
+  taskID: number;
+  userID: number;
+}
+
+class completeTask {
+    taskID: number;
 }
 
 @Controller()
@@ -41,4 +50,36 @@ export class TaskController {
 
     return { task };
   }
+
+  @Post('/completeTask')
+  public async markAsComplete(@JwtBody() JwtBody: JwtBodyDto, @Body() body: completeTask) {
+      let task = await this.tasksService.findTasksById(body.taskID);
+
+      task.status = !task.status;
+
+      if (task.userId == JwtBody.userId) {
+        task = await this.tasksService.createTasks(task);
+
+        return {task}; 
+      }
+
+      else {
+        throw new HttpException('User is not assigned to the task', 403);
+      }
+
+        
+  }
+
+  @Post('/updateUser')
+  public async updateAssignedUSer(@JwtBody() JwtBody: JwtBodyDto, @Body() body: newAssingedUser) {
+      let task = await this.tasksService.findTasksById(body.taskID);
+
+      task.userId = body.userID
+
+      task = await this.tasksService.createTasks(task);
+
+      return {task};   
+  }
+
+
 }
