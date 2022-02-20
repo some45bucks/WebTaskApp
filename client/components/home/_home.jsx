@@ -22,6 +22,14 @@ export const Home = () => {
   const [lead, setlead] = useState({ firstName: 'Loading...' });
   const [tasks, setTasks] = useState([]);
   const [email, setEmail] = useState('');
+
+
+  const logout = async () => {
+    const res = await api.del('/sessions');
+    if (res.success) {
+      setAuthToken(null);
+    }
+  };
   
   useEffect(async () => {
     resetProjects();
@@ -121,6 +129,13 @@ export const Home = () => {
       </div>
       <div className="flex flex-row h-full">
         <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto">
+        <Button 
+          onClick={() => {
+            logout();
+          }}
+        >
+          Logout
+        </Button>
         <Button
           onClick={() => {
             createProject();
