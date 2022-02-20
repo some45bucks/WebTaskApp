@@ -50,6 +50,15 @@ export const Home = () => {
     setProjects([...projects, project]);
   };
 
+  const addProjectName = async (id, newName) => {
+    const projectNameBody = {
+      name: newName,
+    };
+
+    await api.post(`/projects/${id}`, projectNameBody);
+
+    update();
+  };
 
   const addUser = async (id, email) => {
     const emailBod = {
