@@ -28,7 +28,6 @@ export const Home = () => {
   const [isProjOpen, setProjOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isTaskOpen, setTaskOpen] = useState(false);
-  
 
   useEffect(async () => {
     resetProjects();
@@ -55,7 +54,7 @@ export const Home = () => {
     };
 
     setIsUserOpen(!isUserOpen);
-    
+
     await api.post(`/projects/${id}`, emailBod);
 
     update();
@@ -148,40 +147,57 @@ export const Home = () => {
     update();
   };
 
+  const logout = async () => {
+    const res = await api.del('/sessions');
+    if (res.success) {
+      setAuthToken(null);
+    }
+  };
+
   //put in way to put in new project name
   return (
     <div className="bg-blue-200">
       <div className="bg-blue-900/90"></div>
       <div className="flex flex-row h-full">
         {/* ----------------------- First Column Code ----------------------------*/}
-        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto ">
-        {isProjOpen ? 
 
-          <div className="bg-blue-500 border-2 border-blue-600 h-1/6">
+        <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto ">
+          {isProjOpen ? (
+            <form className="bg-blue-500 border-2 border-blue-600 h-1/6">
+              <div>
+                <label className="block" htmlFor="projectNameEnter">Project Name:</label>
+                <input
+                  className="border-2 w-full"
+                  id="projectNameEnter"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  type="text"
+                />
+              </div>
+              <div className="flex-1 mt-2 mb-2 text-right">
+                <Button
+                  onClick={() => {
+                    createProject(projectName);
+                  }}
+                >
+                  Create Project
+                </Button>{' '}
+              </div>
+            </form>
+          ) : (
             <div>
-              <label htmlFor="projectNameEnter">Project Name:</label>
-              <input
-                className="border-2"
-                id="projectNameEnter"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                type="text"
-              />
-            </div>
-            <div>
+              {' '}
               <Button
                 onClick={() => {
-                  createProject(projectName);
+                  logout();
                 }}
               >
-                Create Project
-              </Button>{' '}
+                {' '}
+                Logout{' '}
+              </Button>
+              <Button onClick={() => setProjOpen(!isProjOpen)}> Create Project </Button>{' '}
             </div>
-          </div>
-
-          : 
-          <div> <button onClick={()=>setProjOpen(!isProjOpen)}> Create Project </button> </div>
-          }
+          )}
           {projects.map((project) => {
             const isSelected = focusProject && project.id === focusProject.id;
 
@@ -194,27 +210,29 @@ export const Home = () => {
         </div>
         {/* ----------------------- Second Column Code ----------------------------*/}
         <div className="bg-blue-600/75 m-5 rounded flex-1 shadow-lg max-h-screen overflow-y-auto">
-        {isUserOpen ? 
-          <div className="bg-blue-600 h-1/6 border-2 border-blue-800">
-            <div>
+          {isUserOpen ? (
+            <form className="bg-blue-600 h-1/6 border-2 border-blue-800">
+              <div>
+                <label className="block" htmlFor="emailEnter">User Email:</label>
+                <input
+                  className="border-2 w-full"
+                  id="emailEnter"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                />
+              </div>
+              <div className="flex-1 mt-2 mb-2 text-right">
+                {' '}
+                <Button onClick={() => addUser(focusProject.id, email)}>Add User</Button>{' '}
+              </div>
+            </form>
+          ) : (
+            <div className="text-right">
               {' '}
-              <Button onClick={() => addUser(focusProject.id, email)}>Add User</Button>{' '}
+              <Button onClick={() => setIsUserOpen(!isUserOpen)}> Add User </Button>{' '}
             </div>
-            <div>
-              <label htmlFor="emailEnter">User Email:</label>
-              <input
-                className="border-2"
-                id="emailEnter"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="text"
-              />
-            </div>
-          </div>
-
-          :
-          <div> <button onClick={()=>setIsUserOpen(!isUserOpen)}> Add User </button> </div>
-        }
+          )}
           {users.map((user) => {
             const isSelected = focusUser && user.id === focusUser.id;
 
@@ -227,46 +245,48 @@ export const Home = () => {
         </div>
         {/* ----------------------- Third Column Code ----------------------------*/}
         <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto text-right">
-          {isTaskOpen ?
-          <form className="bg-blue-500 shadow-md rounded  text-left border-2 border-blue-600 relative">
-            {' '}
-            <div>
-              {/* ----------------------- Add Task Functionality ----------------------------*/}
-              <div className="px-1">
-                <label className="block" htmlFor="taskNameEnter">
-                  Task Name{' '}
-                </label>
-                <input
-                  className="border-2 w-full"
-                  id="taskNameEnter"
-                  value={taskName}
-                  onChange={(e) => setTaskName(e.target.value)}
-                  type="text"
-                />
+          {isTaskOpen ? (
+            <form className="bg-blue-500 shadow-md rounded  text-left border-2 border-blue-600 relative">
+              {' '}
+              <div>
+                {/* ----------------------- Add Task Functionality ----------------------------*/}
+                <div className="px-1">
+                  <label className="block" htmlFor="taskNameEnter">
+                    Task Name{' '}
+                  </label>
+                  <input
+                    className="border-2 w-full"
+                    id="taskNameEnter"
+                    value={taskName}
+                    onChange={(e) => setTaskName(e.target.value)}
+                    type="text"
+                  />
 
-                {/* ----------------------- Task Description Functionality ----------------------------*/}
+                  {/* ----------------------- Task Description Functionality ----------------------------*/}
 
-                <div className="px-1"></div>
-                <label className="block" htmlFor="taskDescEnter">
-                  Task Description:
-                </label>
-                <input
-                  className="border-2 w-full"
-                  id="taskDescEnter"
-                  value={taskDesc}
-                  onChange={(e) => setTaskDesc(e.target.value)}
-                  type="text"
-                />
+                  <div className="px-1"></div>
+                  <label className="block" htmlFor="taskDescEnter">
+                    Task Description:
+                  </label>
+                  <input
+                    className="border-2 w-full"
+                    id="taskDescEnter"
+                    value={taskDesc}
+                    onChange={(e) => setTaskDesc(e.target.value)}
+                    type="text"
+                  />
+                </div>
               </div>
+              <div className="flex-1 mt-5 mb-2 text-right">
+                <Button onClick={() => addTask(focusProject.id, taskName, taskDesc, 10)}>Add Task</Button>{' '}
+              </div>
+            </form>
+          ) : (
+            <div className="text-right">
+              {' '}
+              <Button onClick={() => setTaskOpen(!isTaskOpen)}> Add Task </Button>{' '}
             </div>
-            <div className="flex-1 mt-5 text-right">
-              <Button onClick={() => addTask(focusProject.id, taskName, taskDesc, 10)}>Add Task</Button>{' '}
-            </div>
-          </form>
-
-          :
-          <div> <button onClick={()=>setTaskOpen(!isTaskOpen)}> Add Task </button> </div>
-        }
+          )}
           {/* ----------------------- Create Tasks to Present ----------------------------*/}
           {tasks.map((task) => {
             return (
