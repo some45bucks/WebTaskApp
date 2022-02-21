@@ -25,6 +25,7 @@ export const Home = () => {
   const [email, setEmail] = useState('');
   const [taskName, setTaskName] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
+  const [taskTime, setTaskTime] = useState('');
   const [isProjOpen, setProjOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isTaskOpen, setTaskOpen] = useState(false);
@@ -131,7 +132,7 @@ export const Home = () => {
       update();
     }
 
-    console.log(task.id + ' ' + focusUser.id + ' ' + task.userID);
+    console.log(task.id + ' ' + focusUser.firstName + ' ' + task.userID);
   };
 
   const completeTask = async (task) => {
@@ -164,15 +165,16 @@ export const Home = () => {
         <div className="bg-blue-500/75 m-5 rounded flex-1 shadow-md max-h-screen overflow-y-auto ">
           {isProjOpen ? (
             <form className="bg-blue-500 border-2 border-blue-600 h-1/6">
-
-                <label className="block" htmlFor="projectNameEnter">Project Name:</label>
-                <input
-                  className="border-2 w-full"
-                  id="projectNameEnter"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  type="text"
-                />
+              <label className="block" htmlFor="projectNameEnter">
+                Project Name:
+              </label>
+              <input
+                className="border-2 w-full"
+                id="projectNameEnter"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                type="text"
+              />
 
               <div className="flex-1 mt-2 mb-2 text-right">
                 <Button
@@ -213,7 +215,9 @@ export const Home = () => {
           {isUserOpen ? (
             <form className="bg-blue-600 h-1/6 border-2 border-blue-800">
               <div>
-                <label className="block" htmlFor="emailEnter">User Email:</label>
+                <label className="block" htmlFor="emailEnter">
+                  User Email:
+                </label>
                 <input
                   className="border-2 w-full"
                   id="emailEnter"
@@ -264,7 +268,6 @@ export const Home = () => {
 
                   {/* ----------------------- Task Description Functionality ----------------------------*/}
 
-                  <div className="px-1"></div>
                   <label className="block" htmlFor="taskDescEnter">
                     Task Description:
                   </label>
@@ -275,10 +278,21 @@ export const Home = () => {
                     onChange={(e) => setTaskDesc(e.target.value)}
                     type="text"
                   />
+
+                  <label className="block" htmlFor="taskTimeEnter">
+                    Time Estimation:
+                  </label>
+                  <input
+                    className="border-2 w-full"
+                    id="taskTimeEnter"
+                    value={taskTime}
+                    onChange={(e) => setTaskTime(e.target.value)}
+                    type="text"
+                  />
                 </div>
               </div>
               <div className="flex-1 mt-5 mb-2 text-right">
-                <Button onClick={() => addTask(focusProject.id, taskName, taskDesc, 10)}>Add Task</Button>{' '}
+                <Button onClick={() => addTask(focusProject.id, taskName, taskDesc, taskTime)}>Add Task</Button>{' '}
               </div>
             </form>
           ) : (
