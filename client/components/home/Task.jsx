@@ -9,6 +9,7 @@ export const Task = ({task,completeTask,addUser}) => {
             <div> Time Estimate: {task.timeEst}</div>
             <div> Task Status:
             {(task.status) ? <div className="bg-green-500 w-1/6"> Complete! </div> : <div className='bg-red-500  w-1/4'> Not Complete! </div>} </div>
+            <div> User ID: {task.userId}</div>
         
             <Button onClick={()=>addUser(task)}>Add User</Button> 
             <Button onClick={()=>completeTask(task)}>Complete Task</Button>
